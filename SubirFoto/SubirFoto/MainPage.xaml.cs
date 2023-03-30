@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Android.OS;
+using Dapper;
 using MySqlConnector;
 using SubirFoto.Models;
 using System.Data;
@@ -27,6 +28,9 @@ public partial class MainPage : ContentPage
             {
                 SelectedPhotoImage.Source = ImageSource.FromFile(photo.FullPath);
                 RutaFoto= photo.FullPath;
+                SelectedPhotoImage.IsVisible = true;
+                SelectPhotoButton.IsVisible = false;
+                SubirFoto.IsVisible= true;
             }
         }
         catch (Exception ex)
@@ -36,20 +40,27 @@ public partial class MainPage : ContentPage
     }
     private async void OnSelectSubirFoto(object sender, EventArgs e)
     {
+        Random rnd = new Random();
         try
         {
             var foto = new Foto
             {
+                Nombre = "Imagen"+ rnd.Next(1,99999),
                 _Imagen = File.ReadAllBytes(RutaFoto)
 
             };
-            string consulta = "INSERT INTO Cumple (Imagen) VALUES (@_Imagen)";
+            string consulta = "INSERT INTO Cumple_Imagenes (Imagen, Nombre) VALUES (@_Imagen,@Nombre)";
             int filasInsertadas = await connection.ExecuteAsync(consulta, foto);
+            await DisplayAlert("Éxito", "La Imagen a sido Subida Correctamente", "Aceptar");
+            SelectedPhotoImage.IsVisible = false;
+            SelectPhotoButton.IsVisible = true;
+            SubirFoto.IsVisible = false;
         }
         catch (Exception ex)
         {
             // Manejar errores aquí
         }
+        
     }
 }
 

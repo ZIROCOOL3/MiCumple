@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Mi Cumple"
+        Title="Cumpleaños Javier Esteban Canteros"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

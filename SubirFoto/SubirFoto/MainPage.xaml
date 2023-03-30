@@ -11,6 +11,7 @@
                 FontSize="32"
                 HorizontalOptions="Center" />
             <Button 
+                Margin="100"
                 x:Name="SelectPhotoButton"
                 Text="Seleccionar foto"
                 Clicked="OnSelectPhotoClicked" 
@@ -20,7 +21,9 @@
                 x:Name="SelectedPhotoImage"
                 Aspect="AspectFit" />
 
-            <Button 
+            <Button
+                Margin="20"
+                IsVisible="false"
                 x:Name="SubirFoto"
                 Text="Subir Foto"
                 Clicked="OnSelectSubirFoto" 

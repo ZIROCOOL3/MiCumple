@@ -8,6 +8,7 @@ namespace SubirFoto.Models
 {
     public class Foto
     {
+        public string Nombre { get; set; }
         public byte[] _Imagen { get; set; }
     }
 }
