@@ -1,0 +1,270 @@
+﻿@page "/"
+@using MiCumple.Models;
+@using MySql.Data.MySqlClient;
+@using System.Text;
+@using Microsoft.AspNetCore.Hosting;
+@inject IWebHostEnvironment env
+<!--==========================
+    Header
+  ============================-->
+  <header id="header">
+    <div class="container">
+
+      <div id="logo" class="pull-left">
+        <h1><a href="#body" class="scrollto"><span><i class="fa fa-bolt" aria-hidden="true"></i></span>FIESTA</a></h1> 
+        <!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
+      </div>
+
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li class="menu-active"><a href="#body">Inicio</a></li>
+          <li><a href="#portfolio">Galeria</a></li>
+          <li><a href="#event">Intinerario</a></li>
+          <li><a href="#contact">Confirmacion</a></li>
+                
+               
+        </ul>
+      </nav><!-- #nav-menu-container -->
+    </div>
+  </header><!-- #header -->
+
+  <!--==========================
+    Intro Section
+  ============================-->
+  <section id="intro">
+
+    <div class="intro-content">
+      <h2><span>Hola Amigo/a</span><br>Estas Invitado a mi Cumple!</h2>
+      <div>
+        <a href="#contact" class="btn-get-started scrollto">Confirmar Asistencia</a> 
+      </div>
+    </div>
+    <div class="item" style="background-image: url('img/intro-carousel/1.jpg');"></div>  
+  </section><!-- #intro -->
+
+  <main id="main">
+
+
+    <!--==========================
+      Our Portfolio Section
+    ============================-->
+    <section id="portfolio" class="wow fadeInUp">
+      <div class="container">
+        <div class="section-header">
+          <h2>Galeria</h2>
+          <p>Aqui veras las Fotos En tiempor real del Cumpleaños</p>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row no-gutters">
+            @foreach (var item in fotos)
+                {
+                    <div class="col-lg-3 col-md-4">
+                        <div class="portfolio-item wow fadeInUp">
+                            <a href=@item.Fotos class="portfolio-popup">
+                                <img src=@item.Fotos alt="">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-info"><h2 class="wow fadeInUp">Portfolio Name</h2></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                }
+
+        </div>
+
+      </div>
+    </section><!-- #portfolio -->
+
+	  <!--==========================
+      Event Section
+    ============================-->
+    <section id="event">
+      <div class="container box2-main">
+        <div class="section-header">
+          <h2>Intinerario</h2>
+          <p>Los Horarios son estimativos</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box2 wow fadeInLeft">
+              <div class="leftSec">
+				        <p>11:00 - 15:00 </p>
+  		        </div>
+              <div class="rightSec">
+                    <h4 class="title"><a>Almuerzo</a></h4>
+                    <p class="description">La hora de Legada al lugar es estimativa luego de una breve picada se realizara el almuerzo. Se les pide a los comensales que lleven su bebida y cubierto.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="box2 wow fadeInLeft">
+                    <div class="leftSec">
+                            <p>23:00 - 06:00</p>
+    	              </div>
+                    <div class="rightSec">
+                      <h4 class="title"><a>Orange Party 2</a></h4>
+                      <p class="description">El Gym Funcional Fit realiza una fiesta a todo trapo como nos tiene acostumbrado y aprovecho para festejar m cumple ahi, estan todos invitados pero la entrada se paga ;).</p>
+                    </div>
+            </div>
+          </div>
+        </div>    
+      </div>
+    </section><!-- #services -->
+	
+   
+ 
+
+ 
+    <!--==========================
+      Contact Section
+    ============================-->
+    <section id="contact" class="wow fadeInUp">
+      <div class="container">
+        <div class="section-header">
+          <h2>Confirmacion</h2>
+          <p>Pon tu nombre completo y presiona enviar para confirmar la presencia. Gracias</p>
+        </div>
+
+        <div class="row contact-info">
+         <div class="col-lg-5"> 
+            <div class="contact-address">
+              <i class="ion-ios-location-outline"></i>
+              <h3>Direccion</h3>
+              <address>Silvana House</address>
+            </div> 
+		      </div>
+          <div class="col-lg-7">
+            <div class="container">
+          <div class="form"> 
+		  
+		   <!-- Form itself -->
+          <form name="sentMessage" class="well" id="contactForm"  novalidate> 
+		       <div class="control-group">
+                   <div class="form-group">
+			                <input type="text" class="form-control" 
+			   	              placeholder="Nombre Completo" id="name" required
+			                  data-validation-required-message="Por favor Ingrese Su Nombre Completo" @bind=@NombreInvitado />
+			                <p class="help-block"></p>
+
+		                </div>
+	         </div> 	
+          
+			  
+               
+	     <div id="success"> </div> <!-- For success/fail messages -->
+                                <button type="submit" class="btn btn-primary pull-right" @onclick=GuardarConfirmacion>Enviar</button><br />
+          </form>
+        </div>
+
+      </div>
+		 </div>
+         
+
+        </div>
+      </div>
+
+      <div class="container mb-4 map">
+	  <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3542.1471296241493!2d-58.976085!3d-27.402338999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDI0JzA4LjQiUyA1OMKwNTgnMzMuOSJX!5e0!3m2!1ses-419!2sar!4v1680012564885!5m2!1ses-419!2sar" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe> 
+      </div>
+ 
+    </section><!-- #contact -->
+
+  </main>
+
+  <!--==========================
+    Footer
+  ============================-->
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>Girosoft</strong>. Todos Los Derechos Reservados
+      </div>
+      
+    </div>
+  </footer><!-- #footer -->
+
+
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<AnchorNavigation />
+@code 
+{
+    List<Foto> fotos = new();
+    string CadenaConexion = "Server = 89.117.7.154; Port = 3306; database = u553439813_serte; user id = u553439813_sopor; password = 9KX$2mnh";
+    string NombreInvitado = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        byte[] img;
+        string Nombre = string.Empty;
+        using (MySqlConnection conexion = new MySqlConnection(CadenaConexion))
+        {
+            conexion.Open();
+            StringBuilder query = new StringBuilder();
+            query.AppendLine("select * from Cumple_Imagenes");
+
+            MySqlCommand cmd = new MySqlCommand(query.ToString(), conexion);
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            using (MySqlDataReader dr = cmd.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    Nombre = dr["Nombre"].ToString() + ".jpg";
+                    var filePath = Path.Combine(env.ContentRootPath, "wwwroot", "img", "portfolio", Nombre);
+                    using var fileStream = new FileStream(filePath, FileMode.Create);
+                    img = (byte[])dr["Imagen"];
+                    await fileStream.WriteAsync(img, 0, img.Length);
+                    fotos.Add(new Foto() { Fotos = "img/portfolio/" + Nombre });
+
+
+                }
+            }
+        }
+    }
+    private async void GuardarConfirmacion()
+    {
+        int respuesta = 0;
+        MySqlTransaction objTransaccion = null;
+        using (MySqlConnection conexion = new MySqlConnection(CadenaConexion))
+        {
+            try
+            {
+                conexion.Open();
+                objTransaccion = conexion.BeginTransaction();
+                StringBuilder query = new StringBuilder();
+
+                string query2 = "INSERT INTO Cumple_Invitados(Nombre) values(@Nombre);select LAST_INSERT_ID();";
+
+                MySqlCommand cmd = new MySqlCommand(query2, conexion);
+
+                cmd.Parameters.AddWithValue("@Nombre", NombreInvitado);
+ 
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Transaction = objTransaccion;
+                respuesta = Convert.ToInt32(cmd.ExecuteScalar());
+
+
+                if (respuesta < 1)
+                {
+                    objTransaccion.Rollback();
+                    //mensaje = "No se pudo registrar la factura";
+                }
+
+                objTransaccion.Commit();
+
+            }
+            catch (Exception ex)
+            {
+                objTransaccion.Rollback();
+                respuesta = 0;
+                //mensaje = ex.Message;
+            }
+        }
+
+    }
+}
