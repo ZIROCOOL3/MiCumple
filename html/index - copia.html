@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fecha de Volver al Futuro</title>
+	<style>
+		/* Aplicamos un estilo general al input */
+		input {
+			font-family: "Outrun Future";
+			font-size: 2rem;
+			padding: 10px;
+			border: 5px solid #1d1d1d;
+			border-radius: 10px;
+			color: #fff;
+			background-color: #1d1d1d;
+			text-align: center;
+			outline: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		/* Cambiamos el color del texto dentro del input cuando está seleccionado */
+		input::-webkit-datetime-edit-text {
+			color: #fff;
+		}
+
+		/* Cambiamos el color de fondo del input cuando está seleccionado */
+		input::-webkit-datetime-edit-fields-wrapper {
+			background-color: #fff;
+			border-radius: 10px;
+		}
+
+		/* Cambiamos el color del placeholder */
+		input::-webkit-input-placeholder {
+			color: #ccc;
+		}
+
+		/* Cambiamos el color de la fecha seleccionada */
+		input::-webkit-calendar-picker-indicator {
+			filter: invert(1);
+		}
+	</style>
+</head>
+<body>
+	<h1>Elige tu fecha para viajar en el tiempo</h1>
+	<input type="date" placeholder="dd/mm/aaaa">
+</body>
+</html>

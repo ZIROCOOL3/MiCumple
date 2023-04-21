@@ -4,6 +4,7 @@
 @using System.Text;
 @using Microsoft.AspNetCore.Hosting;
 @inject IWebHostEnvironment env
+@inject IJSRuntime JSRuntime
 <!--==========================
     Header
   ============================-->
@@ -11,15 +12,17 @@
     <div class="container">
 
       <div id="logo" class="pull-left">
-        <h1><a href="#body" class="scrollto"><span><i class="fa fa-birthday-cake" aria-hidden="true"></i></span>15 DE ABRIL</a></h1> 
-        <!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
+        <h1><a href="#body" class="scrollto"><span><i class="fa fa-birthday-cake" aria-hidden="true"></i></span>15 DE ABRIL</a></h1>
+
+            
+            <!-- <a href="#body"><img src="img/logo.png" alt="" title="" /></a>-->
       </div>
 
       <nav id="nav-menu-container">
         <ul class="nav-menu">
           <li class="menu-active"><a href="#body">Inicio</a></li>
           <li><a href="#portfolio">Galeria</a></li>
-          <li><a href="#event">Intinerario</a></li>
+          <li><a href="#event">Itinerario</a></li>
           <li><a href="#contact">Confirmacion</a></li>
                 
                
@@ -34,12 +37,15 @@
   <section id="intro">
 
     <div class="intro-content">
-        <h2><span>Hola Amig@@</span><br>Estas Invitado a mi Cumple!</h2>
+        @*<h2><span>Hola Amig@@</span><br>Estas Invitado a mi Cumple!</h2>*@
+        <h2><span>Hola Amig@@</span></h2>
+        <h3>Estas Invitado a mi Cumple!</h3>
       <div>
         <a href="#contact" class="btn-get-started scrollto">Confirmar Asistencia</a> 
       </div>
     </div>
-    <div class="item" style="background-image: url('img/intro-carousel/1.jpg');"></div>  
+    <div class="item" style="background-image: url('img/intro-carousel/1.jpg');"></div>
+
   </section><!-- #intro -->
 
   <main id="main">
@@ -84,7 +90,7 @@
     <section id="event">
       <div class="container box2-main">
         <div class="section-header">
-          <h2>Intinerario</h2>
+          <h2>Itinerario</h2>
           <p>Los Horarios son estimativos</p>
         </div>
 
@@ -228,43 +234,50 @@
     }
     private async void GuardarConfirmacion()
     {
-        int respuesta = 0;
-        MySqlTransaction objTransaccion = null;
-        using (MySqlConnection conexion = new MySqlConnection(CadenaConexion))
+        if (NombreInvitado!="")
         {
-            try
+            int respuesta = 0;
+            MySqlTransaction objTransaccion = null;
+            using (MySqlConnection conexion = new MySqlConnection(CadenaConexion))
             {
-                conexion.Open();
-                objTransaccion = conexion.BeginTransaction();
-                StringBuilder query = new StringBuilder();
+                try
+                {
+                    conexion.Open();
+                    objTransaccion = conexion.BeginTransaction();
+                    StringBuilder query = new StringBuilder();
 
-                string query2 = "INSERT INTO Cumple_Invitados(Nombre) values(@Nombre);select LAST_INSERT_ID();";
+                    string query2 = "INSERT INTO Cumple_Invitados(Nombre) values(@Nombre);select LAST_INSERT_ID();";
 
-                MySqlCommand cmd = new MySqlCommand(query2, conexion);
+                    MySqlCommand cmd = new MySqlCommand(query2, conexion);
 
-                cmd.Parameters.AddWithValue("@Nombre", NombreInvitado);
- 
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Transaction = objTransaccion;
-                respuesta = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.Parameters.AddWithValue("@Nombre", NombreInvitado);
+
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Transaction = objTransaccion;
+                    respuesta = Convert.ToInt32(cmd.ExecuteScalar());
 
 
-                if (respuesta < 1)
+                    if (respuesta < 1)
+                    {
+                        objTransaccion.Rollback();
+                        //mensaje = "No se pudo registrar la factura";
+                    }
+
+                    objTransaccion.Commit();
+                    await JSRuntime.InvokeVoidAsync("alert", "Confirmacion Enviada!");
+
+                }
+                catch (Exception ex)
                 {
                     objTransaccion.Rollback();
-                    //mensaje = "No se pudo registrar la factura";
+                    respuesta = 0;
+                    //mensaje = ex.Message;
                 }
-
-                objTransaccion.Commit();
-
-            }
-            catch (Exception ex)
-            {
-                objTransaccion.Rollback();
-                respuesta = 0;
-                //mensaje = ex.Message;
             }
         }
-
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Debe Ingresar un Nombre");
+        }
     }
 }

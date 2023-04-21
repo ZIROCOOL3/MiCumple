@@ -1,0 +1,8 @@
+#e51c22
+
+
+#ea5822
+
+#ffd000
+
+-webkit-linear-gradient(#e51c22, #ffdd00);
